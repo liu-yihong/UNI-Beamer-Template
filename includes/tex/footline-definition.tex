@@ -1,0 +1,249 @@
+%%%
+% UNI Beamer Template -- layout (headline, frame title, footline, title page,
+%                         section pages, lists, blocks, closing frame)
+% Author: Yihong Liu (https://liu-yihong.github.io/)
+% License: GNU GPL v3.0
+%%%
+\makeatletter
+
+% ---------------------------------------------------------------- switches
+% Show a short "Roadmap" slide (TOC with the current section highlighted)
+% at the start of every section except the first. Turn off with \uniroadmapfalse.
+\newif\ifuniroadmap \uniroadmaptrue
+
+% Headline style. Choose one:  auto | nav | breadcrumb | none
+%   auto       : "nav" if the deck has at most \uninavmaxsections sections,
+%                otherwise "breadcrumb" (default; decided from the previous run)
+%   nav        : clickable list of ALL section names, current one in gold.
+%                Only sections are listed, never subsections. Long names can be
+%                shortened for the bar: \section[Short]{Long Section Title}
+%   breadcrumb : only where you are now: "3 / 12 · Section » Subsection".
+%                Scales to any number of sections and subsections.
+%   none       : no headline bar
+\newcommand{\uniheadlinestyle}{auto}
+\newcommand{\uninavmaxsections}{7}
+
+% ---------------------------------------------------------------- fonts
+\setbeamerfont{title}{size=\LARGE,series=\bfseries}
+\setbeamerfont{subtitle}{size=\large}
+\setbeamerfont{author}{size=\normalsize,series=\bfseries}
+\setbeamerfont{institute}{size=\footnotesize}
+\setbeamerfont{date}{size=\footnotesize}
+\setbeamerfont{frametitle}{size=\large,series=\bfseries}
+\setbeamerfont{framesubtitle}{size=\small,series=\mdseries}
+\setbeamerfont{section in head/foot}{size=\tiny}
+\setbeamerfont{author in head/foot}{size=\scriptsize}
+\setbeamerfont{title in head/foot}{size=\scriptsize}
+\setbeamerfont{date in head/foot}{size=\scriptsize,series=\bfseries}
+\setbeamerfont{block title}{size=\normalsize,series=\bfseries}
+\setbeamerfont{caption}{size=\footnotesize}
+\setbeamerfont{footnote}{size=\tiny}
+
+% ---------------------------------------------------------------- general
+\setbeamertemplate{navigation symbols}{}
+\setbeamertemplate{caption}[numbered]
+\setbeamertemplate{blocks}[rounded][shadow=false]
+\setbeamertemplate{itemize item}[circle]
+\setbeamertemplate{itemize subitem}[triangle]
+\setbeamertemplate{itemize subsubitem}[circle]
+\setbeamertemplate{enumerate item}[circle]
+\setbeamertemplate{enumerate subitem}[default]
+\setbeamertemplate{section in toc}[circle]
+\setbeamertemplate{subsection in toc}[square]
+\setbeamertemplate{section in toc shaded}[default][30]
+\setbeamertemplate{section in head/foot shaded}[default][45]
+\setbeamersize{text margin left=1.1cm, text margin right=1.1cm}
+
+% ---------------------------------------------------------------- headline
+% Thin bar with clickable section navigation; current section in gold.
+\def\uni@navbar{%
+  \begin{beamercolorbox}[wd=\paperwidth,ht=2.2ex,dp=0.9ex]{section in head/foot}%
+    \usebeamerfont{section in head/foot}%
+    \insertsectionnavigationhorizontal{\paperwidth}{\hskip0pt plus1fill}{\hskip0pt plus1fill}%
+  \end{beamercolorbox}%
+}
+\def\uni@breadcrumb{%
+  \begin{beamercolorbox}[wd=\paperwidth,ht=2.2ex,dp=0.9ex,leftskip=0.8cm,rightskip=0.8cm plus 1fill]{section in head/foot}%
+    \usebeamerfont{section in head/foot}%
+    \ifnum\value{section}>0
+      {\color{white!70!uniPurple}\thesection\,/\,\uni@lastsection\enspace\textbullet\enspace}%
+      \insertsectionhead
+      \ifx\insertsubsectionhead\@empty\else
+        {\color{white!70!uniPurple}\enspace\guillemotright\enspace}\insertsubsectionhead
+      \fi
+    \fi
+  \end{beamercolorbox}%
+}
+\setbeamertemplate{headline}{%
+  \ifdefstring{\uniheadlinestyle}{nav}{\uni@navbar}{}%
+  \ifdefstring{\uniheadlinestyle}{breadcrumb}{\uni@breadcrumb}{}%
+  \ifdefstring{\uniheadlinestyle}{auto}{%
+    \ifnum\uni@lastsection>\uninavmaxsections\relax\uni@breadcrumb\else\uni@navbar\fi
+  }{}%
+}
+% total number of sections, read from the previous run (for "3 / 8")
+\def\uni@lastsection{0}
+\AddToHook{enddocument/afterlastpage}{\immediate\write\@mainaux{\string\gdef\string\uni@lastsection{\arabic{section}}}}
+
+% ---------------------------------------------------------------- frame title
+% Purple bar with a Goldenrod rule underneath.
+% Two sizes:
+%   normal  : \large title (default)
+%   compact : \normalsize title in a slim bar, for content-heavy slides
+% One slide:   \begin{frame}[compact]{Title}
+% Whole deck:  put \unicompacttitles in the preamble (\uninormaltitles switches back;
+%              \begin{frame}[normaltitle]{...} restores one slide)
+\def\uni@setnormal{%
+  \setbeamerfont{frametitle}{size=\large}\gdef\uni@ftht{2.75ex}\gdef\uni@ftdp{1.05ex}}
+\def\uni@setcompact{%
+  \setbeamerfont{frametitle}{size=\normalsize}\gdef\uni@ftht{2.4ex}\gdef\uni@ftdp{0.9ex}}
+\def\uni@deckstyle{normal}
+\uni@setnormal
+\newcommand{\uninormaltitles}{\gdef\uni@deckstyle{normal}\uni@setnormal}
+\newcommand{\unicompacttitles}{\gdef\uni@deckstyle{compact}\uni@setcompact}
+\define@key{beamerframe}{compact}[true]{\uni@setcompact}
+\define@key{beamerframe}{normaltitle}[true]{\uni@setnormal}
+% every frame starts from the deck default, so [compact] affects only its own slide
+\BeforeBeginEnvironment{frame}{%
+  \ifdefstring{\uni@deckstyle}{compact}{\uni@setcompact}{\uni@setnormal}}
+
+\def\uni@ftcontent{%
+  \insertframetitle%
+  \ifx\insertframesubtitle\@empty\else%
+    \hspace{0.6em}{\usebeamerfont{framesubtitle}\usebeamercolor[fg]{framesubtitle}\insertframesubtitle}%
+  \fi}
+\setbeamertemplate{frametitle}{%
+  \nointerlineskip%
+  % Titles that fit on one line use a fixed-height bar. Longer titles wrap, and the
+  % bar grows downward (instead of spilling up over the navigation bar).
+  \setbox\z@\hbox{\usebeamerfont{frametitle}\uni@ftcontent}%
+  \ifdim\wd\z@>\dimexpr\paperwidth-1.6cm\relax
+    \setlength{\@tempdima}{\uni@ftht}\setlength{\@tempdimb}{\uni@ftdp}%
+    \begin{beamercolorbox}[wd=\paperwidth,leftskip=0.8cm,rightskip=0.8cm plus 1fill]{frametitle}%
+      \usebeamerfont{frametitle}%
+      \rule{\z@}{\dimexpr\@tempdima+0.6em\relax}\uni@ftcontent%
+      \rule[-\dimexpr\@tempdimb+0.1em\relax]{\z@}{\z@}\par%
+    \end{beamercolorbox}%
+  \else
+    \begin{beamercolorbox}[wd=\paperwidth,leftskip=0.8cm,rightskip=0.8cm plus 1fill,
+                           ht=\uni@ftht,dp=\uni@ftdp]{frametitle}%
+      \usebeamerfont{frametitle}\uni@ftcontent%
+    \end{beamercolorbox}%
+  \fi
+  \nointerlineskip%
+  \begin{beamercolorbox}[wd=\paperwidth,ht=2pt,dp=0pt]{frametitle rule}%
+  \end{beamercolorbox}%
+  \vskip0.1em%
+}
+
+% ---------------------------------------------------------------- footline
+% \uni@trunc{text}{width}: text as-is if it fits, otherwise cut at a word boundary + "..."
+\def\uni@trunc#1#2{%
+  \setbox\z@\hbox{#1}%
+  \ifdim\wd\z@>\dimexpr#2\relax\truncate[\,\ldots]{#2}{#1}\else\box\z@\fi}
+
+%  [ author (institute) | short title | page / total ]
+%  The two side boxes have the same width, so the title is centered on the slide.
+\def\uni@footside{.18}   % width of each side box (fraction of \paperwidth)
+\def\uni@footmid{.64}    % = 1 - 2 x side
+\setbeamertemplate{footline}{%
+  \leavevmode%
+  \hbox{%
+    \begin{beamercolorbox}[wd=\uni@footside\paperwidth,ht=2.4ex,dp=1ex,center]{author in head/foot}%
+      \usebeamerfont{author in head/foot}%
+      \begingroup\protected@edef\uni@tmp{\beamer@shortauthor%
+        \expandafter\ifblank\expandafter{\beamer@shortinstitute}{}{~(\insertshortinstitute)}}%
+      \expandafter\uni@trunc\expandafter{\uni@tmp}{\dimexpr\uni@footside\paperwidth-1em\relax}\endgroup%
+    \end{beamercolorbox}%
+    \begin{beamercolorbox}[wd=\uni@footmid\paperwidth,ht=2.4ex,dp=1ex,center]{title in head/foot}%
+      % long titles are cut at a word boundary with "..." so they never spill into
+      % the neighbouring boxes; use \title[Short title]{Full title} to choose the text
+      \usebeamerfont{title in head/foot}%
+      \begingroup\protected@edef\uni@tmp{\beamer@shorttitle}%
+      \expandafter\uni@trunc\expandafter{\uni@tmp}{\dimexpr\uni@footmid\paperwidth-2em\relax}\endgroup%
+    \end{beamercolorbox}%
+    \begin{beamercolorbox}[wd=\uni@footside\paperwidth,ht=2.4ex,dp=1ex,center]{date in head/foot}%
+      \usebeamerfont{date in head/foot}\insertframenumber\,/\,\inserttotalframenumber%
+    \end{beamercolorbox}%
+  }%
+  \vskip0pt%
+}
+
+% ---------------------------------------------------------------- title page
+% Left-aligned layout with a purple/gold band on the left edge,
+% logo (\titlegraphic, set in logo.tex) bottom-right, last-updated stamp bottom-left.
+% All decorations are anchored to the page, so they work for 16:9 and 4:3.
+\setbeamertemplate{title page}{%
+  \begin{tikzpicture}[remember picture,overlay]
+    \fill[uniPurple] (current page.north west) rectangle ([xshift=0.35cm]current page.south west);
+    \fill[uniGold] ([xshift=0.35cm]current page.north west) rectangle ([xshift=0.47cm]current page.south west);
+    \node[anchor=south east,inner sep=0pt] at ([xshift=-0.7cm,yshift=0.55cm]current page.south east)
+      {\inserttitlegraphic};
+    \node[anchor=south west,inner sep=0pt,font=\scriptsize,text=uniGray]
+      at ([xshift=1.1cm,yshift=0.6cm]current page.south west)
+      {\faIcon[regular]{clock}\enspace Last updated: \today};
+  \end{tikzpicture}%
+  \vskip0pt plus 1fill
+  \begin{minipage}{0.86\textwidth}
+    \raggedright
+    {\usebeamerfont{title}\usebeamercolor[fg]{title}\inserttitle\par}%
+    \ifx\insertsubtitle\@empty\else
+      \vskip0.35em{\usebeamerfont{subtitle}\usebeamercolor[fg]{subtitle}\insertsubtitle\par}%
+    \fi
+    \vskip0.7em{\color{uniGold}\rule{3.2cm}{2.5pt}}\par
+    \vskip0.7em{\usebeamerfont{author}\usebeamercolor[fg]{author}\insertauthor\par}%
+    \vskip0.25em{\usebeamerfont{institute}\usebeamercolor[fg]{institute}\insertinstitute\par}%
+    \vskip0.6em{\usebeamerfont{date}\usebeamercolor[fg]{date}\insertdate\par}%
+  \end{minipage}
+  \vskip0pt plus 1.6fill
+}
+
+% ---------------------------------------------------------------- roadmap slides
+% Tighter spacing so decks with many sections still fit; two columns above 7 sections.
+\def\uni@roadmaptoc{%
+  \patchcmd{\beamer@sectionintoc}{\vskip1.5em}{\vskip0.85em}{}{}%
+  \setbeamerfont{section in toc}{size=\small}%
+  \ifnum\uni@lastsection>7\relax
+    \edef\uni@half{\the\numexpr\uni@lastsection/2\relax}%
+    \edef\uni@halfnext{\the\numexpr\uni@half+1\relax}%
+    \edef\uni@tocA{\noexpand\tableofcontents[currentsection,hideallsubsections,sections={1-\uni@half}]}%
+    \edef\uni@tocB{\noexpand\tableofcontents[currentsection,hideallsubsections,sections={\uni@halfnext-\uni@lastsection}]}%
+    \begin{columns}[t]
+      \begin{column}{0.46\textwidth}\uni@tocA\end{column}
+      \begin{column}{0.46\textwidth}\uni@tocB\end{column}
+    \end{columns}%
+  \else
+    \tableofcontents[currentsection,hideallsubsections]%
+  \fi
+}
+\AtBeginSection[]{%
+  \ifuniroadmap
+    \ifnum\value{section}>1
+      \begin{frame}[noframenumbering]{\faIcon{map-signs}\enspace Roadmap}
+        \uni@roadmaptoc
+      \end{frame}
+    \fi
+  \fi
+}
+
+% ---------------------------------------------------------------- closing frame
+% Usage: \uniclosingframe{Q \& A}  or  \uniclosingframe[\emoji{waving-hand}]{Thank you!}
+\newcommand{\uniclosingframe}[2][\emoji{person-raising-hand}]{%
+  {%
+    \setbeamercolor{background canvas}{bg=uniPurple}%
+    \begin{frame}[plain]
+      \centering
+      \vfill
+      {\fontsize{40}{44}\selectfont #1\par}
+      \vskip1em
+      {\usebeamerfont{title}\color{white}#2\par}
+      \vskip0.8em
+      {\color{uniGold}\rule{3.2cm}{2.5pt}\par}
+      \vskip0.8em
+      {\small\hypersetup{urlcolor=white}\color{white!85!uniPurple}\presenter\quad\textbar\quad\email\par}
+      \vfill
+    \end{frame}
+  }%
+}
+
+\makeatother

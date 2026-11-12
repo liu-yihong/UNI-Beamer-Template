@@ -1,0 +1,46 @@
+%%%
+% UNI Beamer Template -- lecture main file
+% Author: Yihong Liu (https://liu-yihong.github.io/)
+% License: GNU GPL v3.0
+% An unofficial LaTeX Beamer template for the University of Northern Iowa.
+% Copyright (c) 2022-2026 Yihong Liu
+% Repository: https://github.com/liu-yihong/UNI-Beamer-Template
+%
+% Build with LuaLaTeX:  latexmk WK1-Mon-Intro.tex
+% To make a new lecture: copy this file, change the two \presentation...WK
+% macros below and the \input of the slide file.
+%%%
+\documentclass[
+  aspectratio=169,                 % 16:9 (use aspectratio=43 for 4:3)
+  xcolor={dvipsnames,svgnames},    % named colors (e.g., DarkBlue, ForestGreen)
+  11pt,
+]{beamer}
+
+\input{includes/tex/packages-import.tex}
+\input{includes/tex/colors-definition.tex}
+\input{includes/tex/footline-definition.tex}
+\input{includes/tex/presentation-info.tex}
+\input{includes/tex/doc-metadata.tex}
+\input{includes/tex/logo.tex}
+
+% ---------------------------------------------------------------- this lecture
+\title[\coursenumber\ \textbullet\ \presentationtitleWKOneMon]{\presentationtitleWKOneMon}
+\subtitle{\presentationsubtitle}
+\author{\presenter}
+\institute[UNI]{%
+  \department, \school\\
+  \university\\[0.3em]
+  \faIcon{envelope}\enspace\email
+  % \\ \faIcon{globe}\enspace\personalwebsite
+}
+\date{\presentationtimeWKOneMon}
+
+\begin{document}
+
+\begin{frame}[plain,noframenumbering]
+  \titlepage
+\end{frame}
+
+\input{includes/slides/WK1/WKONE_Mon}
+
+\end{document}

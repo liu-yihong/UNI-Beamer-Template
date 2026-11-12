@@ -1,0 +1,81 @@
+%%%
+% UNI Beamer Template -- colors
+% Author: Yihong Liu (https://liu-yihong.github.io/)
+% License: GNU GPL v3.0
+%
+% Official UNI primary colors (UNI Brand > Visual Identity > Colors):
+%   Panther Purple  PMS 2607 C   RGB 80/7/120    #500778
+%   Goldenrod       PMS 7549 C   RGB 255/181/0   #FFB500
+% Brand note: purple + gold should always be the most prominent colors;
+% avoid black + gold side by side (University of Iowa colors).
+%%%
+
+% ---------------------------------------------------------------- palette
+\definecolor{uniPurple}{RGB}{80,7,120}        % Panther Purple
+\definecolor{uniGold}{RGB}{255,181,0}         % Goldenrod
+\colorlet{uniPurpleDark}{uniPurple!80!black}  % footline / headline
+\colorlet{uniPurpleLight}{uniPurple!8}        % block bodies, table stripes
+\definecolor{uniGray}{RGB}{88,89,91}          % secondary text
+\definecolor{uniAlert}{RGB}{186,32,48}        % \alert{} and alert blocks
+\definecolor{uniLink}{RGB}{0,84,166}          % hyperlinks
+
+% Backward-compatible aliases used by existing slide files
+\colorlet{pantherpurple}{uniPurple}
+\colorlet{goldenrod}{uniGold}
+
+% ---------------------------------------------------------------- beamer colors
+\setbeamercolor{normal text}{fg=black!88}
+\setbeamercolor{structure}{fg=uniPurple}
+\setbeamercolor{alerted text}{fg=uniAlert}
+\setbeamercolor{example text}{fg=uniPurple}
+
+% title page
+\setbeamercolor{title}{fg=uniPurple}
+\setbeamercolor{subtitle}{fg=uniGray}
+\setbeamercolor{author}{fg=black!88}
+\setbeamercolor{institute}{fg=uniGray}
+\setbeamercolor{date}{fg=uniGray}
+
+% frame title bar
+\setbeamercolor{frametitle}{fg=white,bg=uniPurple}
+\setbeamercolor{framesubtitle}{fg=uniGold}
+\setbeamercolor{frametitle rule}{bg=uniGold}
+
+% headline (section navigation): current section in gold, others dimmed
+\setbeamercolor{section in head/foot}{fg=uniGold,bg=uniPurpleDark}
+
+% footline
+\setbeamercolor{author in head/foot}{fg=white,bg=uniPurpleDark}
+\setbeamercolor{title in head/foot}{fg=white,bg=uniPurple}
+\setbeamercolor{date in head/foot}{fg=uniPurple,bg=uniGold}
+
+% lists
+\setbeamercolor{item}{fg=uniPurple}
+\setbeamercolor{subitem}{fg=uniPurple!55}
+\setbeamercolor{subsubitem}{fg=uniPurple!40}
+\setbeamercolor{item projected}{fg=white,bg=uniPurple}
+
+% table of contents
+\setbeamercolor{section in toc}{fg=black!88}
+\setbeamercolor{section number projected}{fg=white,bg=uniPurple}
+
+% blocks
+\setbeamercolor{block title}{fg=white,bg=uniPurple}
+\setbeamercolor{block body}{fg=black!88,bg=uniPurpleLight}
+\setbeamercolor{block title alerted}{fg=white,bg=uniAlert}
+\setbeamercolor{block body alerted}{fg=black!88,bg=uniAlert!8}
+\setbeamercolor{block title example}{fg=uniPurple,bg=uniGold}
+\setbeamercolor{block body example}{fg=black!88,bg=uniGold!12}
+
+% bibliography
+\setbeamercolor{bibliography item}{fg=uniPurple}
+\setbeamercolor{bibliography entry author}{fg=black!88}
+\setbeamercolor{bibliography entry title}{fg=black!88}
+\setbeamercolor{bibliography entry location}{fg=uniGray}
+\setbeamercolor{bibliography entry note}{fg=uniGray}
+
+% captions
+\setbeamercolor{caption name}{fg=uniPurple}
+
+% links
+\hypersetup{colorlinks=true, linkcolor=., citecolor=., urlcolor=uniLink}

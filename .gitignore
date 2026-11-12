@@ -1,0 +1,39 @@
+# ---- LaTeX build artifacts ----
+*.aux
+*.bbl
+*.bcf
+*.blg
+*.fdb_latexmk
+*.fls
+*.log
+*.nav
+*.out
+*.run.xml
+*.snm
+*.synctex.gz
+*.synctex(busy)
+*.toc
+*.vrb
+*.xdv
+*.bak
+_minted*/
+
+# Compiled slides (attach PDFs to GitHub Releases instead)
+*.pdf
+!includes/pics/*.pdf
+
+# ---- UNI trademarks: keep local copies out of the public repo ----
+# See includes/pics/README.md
+includes/pics/UNI*.pdf
+includes/pics/UNI*.png
+
+# ---- Fonts you add locally (licenses may forbid redistribution) ----
+includes/fonts/*.ttf
+includes/fonts/*.otf
+
+# ---- OS / editor ----
+.DS_Store
+Thumbs.db
+desktop.ini
+.vscode/
+*.swp

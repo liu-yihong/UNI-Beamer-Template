@@ -1,0 +1,111 @@
+%%%
+% UNI Beamer Template -- package imports
+% Author: Yihong Liu (https://liu-yihong.github.io/)
+% License: GNU GPL v3.0
+%
+% ENGINE: compile with LuaLaTeX (fontspec + emoji require it).
+%   latexmk picks LuaLaTeX automatically via the bundled latexmkrc.
+%   On Overleaf: Menu > Settings > Compiler > LuaLaTeX.
+%
+% NOTE: xcolor options are passed through \documentclass[xcolor={...}]
+%       in the main file. Do NOT load xcolor/color/hyperref again here:
+%       beamer already loads them, and reloading causes option clashes.
+%%%
+
+% ---------------------------------------------------------------- fonts
+\usepackage{fontspec}
+% Body font. Choose one:  fira | heros | dejavu | lmsans
+%   fira   : Fira Sans -- screen-oriented, large x-height, clear I/l/1 (default)
+%   heros  : TeX Gyre Heros -- free Helvetica clone
+%   dejavu : DejaVu Sans -- the Bitstream Vera family that the "arev" package is based on
+%   lmsans : Latin Modern Sans -- LaTeX's default; thin strokes, small x-height
+% Any font that is not installed falls back silently to Latin Modern Sans.
+\providecommand{\unibodyfont}{fira}
+
+\ifdefstring{\unibodyfont}{fira}{%
+  \IfFontExistsTF{FiraSans-Regular.otf}{%
+    \setsansfont{FiraSans}[
+      Extension = .otf, UprightFont = *-Regular, BoldFont = *-SemiBold,
+      ItalicFont = *-Italic, BoldItalicFont = *-SemiBoldItalic, Scale = 0.95]%
+  }{}}{}
+\ifdefstring{\unibodyfont}{heros}{%
+  \IfFontExistsTF{texgyreheros-regular.otf}{%
+    \setsansfont{texgyreheros}[
+      Extension = .otf, UprightFont = *-regular, BoldFont = *-bold,
+      ItalicFont = *-italic, BoldItalicFont = *-bolditalic, Scale = 0.92]%
+  }{}}{}
+\ifdefstring{\unibodyfont}{dejavu}{%
+  \IfFontExistsTF{DejaVuSans.ttf}{%
+    \setsansfont{DejaVuSans}[
+      Extension = .ttf, UprightFont = *, BoldFont = *-Bold,
+      ItalicFont = *-Oblique, BoldItalicFont = *-BoldOblique, Scale = 0.86]%
+  }{}}{}
+\usefonttheme{professionalfonts} % keep math in the standard math font
+
+% ---------------------------------------------------------------- core (already loaded)
+% beamer and the LaTeX kernel already load these; listing them is harmless and keeps
+% the full package list in one place. Pass xcolor OPTIONS via \documentclass[xcolor={...}]
+% in the main file -- adding options here causes an "Option clash for package xcolor" error.
+\usepackage{xcolor}
+\usepackage{color}
+\usepackage{hyperref}
+% \usepackage[bookmarks=true,bookmarksopen=true,pdfborder={0 0 0},pdfhighlight={/N},linkbordercolor=[rgb]{0.5,0.5,0.5},implicit=false,pagebackref=true]{hyperref}
+%   (hyperref is loaded by beamer; set such options with \hypersetup{...} instead)
+\usepackage{textcomp}
+% \usepackage[utf8]{inputenc}   % not needed with LuaLaTeX (UTF-8 is native)
+
+% ---------------------------------------------------------------- icons & emoji
+\usepackage{fontawesome5}
+% \usepackage{fontawesome}      % older FontAwesome 4 icon set
+\usepackage{emoji} % https://ctan.org/pkg/emoji
+% Use the first color-emoji font found: Noto Color Emoji (ships with TeX Live,
+% MiKTeX and Overleaf), Segoe UI Emoji (Windows), or a font file you drop into
+% includes/fonts/ (e.g., joypixels-android.ttf).
+\IfFontExistsTF{Noto Color Emoji}{%
+  \setemojifont{Noto Color Emoji}[BoldFont=*]%
+}{%
+  \IfFontExistsTF{Segoe UI Emoji}{%
+    \setemojifont{Segoe UI Emoji}[BoldFont=*]%
+  }{%
+    \IfFileExists{includes/fonts/joypixels-android.ttf}{%
+      \setemojifont{joypixels-android.ttf}[Path=includes/fonts/,BoldFont=*]%
+    }{}%
+  }%
+}
+
+% ---------------------------------------------------------------- layout & graphics
+\usepackage{setspace}
+\usepackage{truncate}            % footer: shorten over-long titles with "..."
+\usepackage{graphicx}
+\usepackage{tikz}
+\usetikzlibrary{calc}
+\usepackage[justification=centering]{caption}
+
+% ---------------------------------------------------------------- tables
+\usepackage{booktabs}
+\usepackage{array}
+\usepackage{longtable}
+\usepackage{multirow}
+\usepackage{multicol}
+
+% ---------------------------------------------------------------- text tools
+\usepackage{listings}
+\usepackage{soul}               % \hl{} highlighting
+\usepackage[normalem]{ulem}     % \uline, \sout (keeps \emph italic)
+\useunder{\uline}{\ul}{}
+\usepackage{censor}             % \censor{} for answer reveals
+% \usepackage{tipa}             % IPA phonetic symbols
+
+% ---------------------------------------------------------------- bibliography
+\usepackage[
+  backend      = biber,
+  natbib       = true,
+  style        = authoryear,
+  sorting      = nty,
+  uniquename   = mininit,
+  maxbibnames  = 99,
+  maxcitenames = 2,
+  mincitenames = 1,
+  backref      = true,
+]{biblatex}
+\addbibresource{includes/bibliography/ref.bib}

@@ -1,0 +1,20 @@
+%%%
+% UNI Beamer Template -- logo
+% Author: Yihong Liu (https://liu-yihong.github.io/)
+% License: GNU GPL v3.0
+%
+% The title-page template (footline-definition.tex) places \titlegraphic
+% in the bottom-right corner. Swap the file below to change the lockup, e.g.
+%   includes/pics/UNI CMYK_Primary HR no-border.pdf   (university primary logo)
+%   includes/pics/UNI CoB no-border.pdf               (Wilson College of Business)
+% UNI brand guide: keep clear space around the logo of at least the height
+% of the "I" in the UNI monogram -- avoid placing content right next to it.
+%%%
+% Logo files are not distributed with this repository (UNI trademarks);
+% see includes/pics/README.md. Without a logo file the title page simply omits it.
+\IfFileExists{includes/pics/UNI CoB no-border.pdf}{%
+  \titlegraphic{\includegraphics[height=1.15cm]{includes/pics/UNI CoB no-border.pdf}}%
+}{}
+
+% Optional: small logo on every slide (uncomment). Keep it subtle.
+% \logo{\includegraphics[height=0.5cm]{includes/pics/UNI CMYK_Primary HR no-border.pdf}}
